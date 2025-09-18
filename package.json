@@ -20,7 +20,8 @@
     "lint:js:fix": "eslint . --fix",
     "start": "ember serve",
     "test": "npm-run-all lint test:*",
-    "test:ember": "ember test"
+    "test:ember": "ember test",
+    "deploy": "ember build --environment=production && git worktree add tmp-gh-pages gh-pages && cp -r dist/* tmp-gh-pages/ && cd tmp-gh-pages && git add . && git commit -m 'Deploy json-diff-app' && git push origin gh-pages && cd .. && git worktree remove tmp-gh-pages"
   },
   "devDependencies": {
     "@ember/optional-features": "^2.0.0",
