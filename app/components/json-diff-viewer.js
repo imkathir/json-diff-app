@@ -9,6 +9,7 @@ export default class JsonDiffViewerComponent extends Component {
   @tracked parsed2 = null;
   @tracked diffs = [];
   @tracked error = null;
+  @tracked filterType = 'all'; // 'all', 'mismatch', 'missing'
 
   @action
   updateJson1(event) {
@@ -48,22 +49,22 @@ export default class JsonDiffViewerComponent extends Component {
 
     if (typeof a !== 'object' || a === null || typeof b !== 'object' || b === null) {
       if (JSON.stringify(a) !== JSON.stringify(b)) {
-        diffs.push({ path, first: a, second: b });
+        diffs.push({ path, first: a, second: b, type: 'mismatch' });
       }
       return diffs;
     }
 
     if (Array.isArray(a) || Array.isArray(b)) {
       if (!Array.isArray(a) || !Array.isArray(b)) {
-        diffs.push({ path, first: a, second: b });
+        diffs.push({ path, first: a, second: b, type: 'mismatch' });
         return diffs;
       }
 
       const max = Math.max(a.length, b.length);
       for (let i = 0; i < max; i++) {
         const p = `${path}.${i}`;
-        if (i >= a.length) diffs.push({ path: p, first: 'MISSING', second: b[i] });
-        else if (i >= b.length) diffs.push({ path: p, first: a[i], second: 'MISSING' });
+        if (i >= a.length) diffs.push({ path: p, first: 'MISSING', second: b[i], type: 'missing', isMissing: true });
+        else if (i >= b.length) diffs.push({ path: p, first: a[i], second: 'MISSING', type: 'missing', isMissing: true });
         else diffs = diffs.concat(this.findDiffs(a[i], b[i], p));
       }
       return diffs;
@@ -72,15 +73,47 @@ export default class JsonDiffViewerComponent extends Component {
     const keys = new Set([...Object.keys(a), ...Object.keys(b)]);
     for (let key of keys) {
       const p = `${path}.${key}`;
-      if (!(key in a)) diffs.push({ path: p, first: 'MISSING', second: b[key] });
-      else if (!(key in b)) diffs.push({ path: p, first: a[key], second: 'MISSING' });
+      if (!(key in a)) diffs.push({ path: p, first: 'MISSING', second: b[key], type: 'missing', isMissing: true });
+      else if (!(key in b)) diffs.push({ path: p, first: a[key], second: 'MISSING', type: 'missing', isMissing: true });
       else diffs = diffs.concat(this.findDiffs(a[key], b[key], p));
     }
 
     return diffs;
   }
 
+  get filteredDiffs() {
+    if (this.filterType === 'all') {
+      return this.diffs;
+    }
+    return this.diffs.filter(diff => diff.type === this.filterType);
+  }
+
+  get mismatchCount() {
+    return this.diffs.filter(diff => diff.type === 'mismatch').length;
+  }
+
+  get missingCount() {
+    return this.diffs.filter(diff => diff.type === 'missing').length;
+  }
+
+  get isAllFilter() {
+    return this.filterType === 'all';
+  }
+
+  get isMismatchFilter() {
+    return this.filterType === 'mismatch';
+  }
+
+  get isMissingFilter() {
+    return this.filterType === 'missing';
+  }
+
+  @action
+  setFilterType(type) {
+    this.filterType = type;
+  }
+
   isDiff(path) {
-    return this.diffs.some(d => d.path === path);
+    return this.filteredDiffs.some(d => d.path === path);
   }
 }

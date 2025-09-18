@@ -1,9 +1,18 @@
 @import 'tailwind.css';
-
+body {
+font-family: "Inter", "Source Sans Pro", Helvetica, Arial, sans-serif;
+}
 /* highlight class for nodes that differ */
-.json-diff-highlight {
-  background: #fff4cc;
-  border-radius: 4px;
+.json-diff-highlight-mismatch {
+  background: #faad63;
+  margin: 0 4px;
+  color: #fff;
+}
+
+.json-diff-highlight-missing {
+  background: #e3342f;
+  margin: 0 4px;
+  color: #fff;
 }
 
 /* temporary flash when clicked via diff list */

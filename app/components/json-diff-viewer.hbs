@@ -29,10 +29,35 @@
 
   {{#if this.diffs.length}}
     <div class="mt-4">
-      <h3 class="text-lg font-semibold">Differences:</h3>
-      <ul class="list-disc pl-6">
-        {{#each this.diffs as |d|}}
-          <li><strong>{{d.path}}</strong> → First: {{d.first}} | Second: {{d.second}}</li>
+      <div class="flex items-center justify-between mb-4">
+        <h3 class="text-lg font-semibold">Differences:</h3>
+        <div class="flex gap-2 text-white">
+          <button
+            type="button"
+            class="px-3 py-1 text-sm rounded {{if this.isAllFilter 'bg-blue text-white' 'bg-gray-200 text-gray-700 hover:bg-gray-300'}}"
+            {{on "click" (fn this.setFilterType 'all')}}
+          >
+            All ({{this.diffs.length}})
+          </button>
+          <button
+            type="button"
+            class="px-3 py-1 text-sm rounded {{if this.isMismatchFilter 'bg-blue text-white' 'bg-gray-200 text-gray-700 hover:bg-gray-300'}}"
+            {{on "click" (fn this.setFilterType 'mismatch')}}
+          >
+            Mismatch ({{this.mismatchCount}})
+          </button>
+          <button
+            type="button"
+            class="px-3 py-1 text-sm rounded {{if this.isMissingFilter 'bg-blue text-white' 'bg-gray-200 text-gray-700 hover:bg-gray-300'}}"
+            {{on "click" (fn this.setFilterType 'missing')}}
+          >
+            Missing ({{this.missingCount}})
+          </button>
+        </div>
+      </div>
+      <ul class="list-disc p-6">
+        {{#each this.filteredDiffs as |d|}}
+          <li><strong>{{d.path}}</strong> → <span class="{{if d.isMissing 'bg-red-light' 'bg-orange-light '}} my-1  text-white">  First: {{d.first}}   |   Second: {{d.second}}</span></li>
         {{/each}}
       </ul>
     </div>
@@ -49,7 +74,7 @@
             @key="root"
             @data={{this.parsed1}}
             @prefix="root"
-            @diffs={{this.diffs}}
+            @diffs={{this.filteredDiffs}}
           />
         </div>
       </div>
@@ -61,7 +86,7 @@
             @key="root"
             @data={{this.parsed2}}
             @prefix="root"
-            @diffs={{this.diffs}}
+            @diffs={{this.filteredDiffs}}
           />
         </div>
       </div>

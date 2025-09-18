@@ -29,7 +29,7 @@ export default class JsonNodeComponent extends Component {
   }
 
   get highlightClass() {
-    return this.diffInfo ? 'json-diff-highlight' : '';
+    return this.diffInfo ? this.diffInfo.type === 'mismatch' ? 'json-diff-highlight-mismatch' : 'json-diff-highlight-missing' : '';
   }
 
   @action
