@@ -4,8 +4,8 @@ module.exports = function (environment) {
   let ENV = {
     modulePrefix: 'json-diff-app',
     environment,
-    rootURL: '/',
-    locationType: 'history',
+     rootURL: '/json-diff-app/',
+    locationType: 'auto',
     EmberENV: {
       FEATURES: {
         // Here you can enable experimental features on an ember canary build
