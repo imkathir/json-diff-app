@@ -1,6 +1,6 @@
 <div class="min-h-screen bg-gray-50 p-6">
   <h1 class="text-3xl font-bold mb-6 text-center">JSON Diff Viewer</h1>
-  <div class="flex flex-col md:flex-row gap-5">
+  <div class="flex flex-col md:flex-row gap-6">
     <div class="flex-1 bg-white p-4 rounded-lg shadow-md">
       <h2 class="text-xl font-semibold mb-2">JSON A</h2>
       <textarea
@@ -40,9 +40,11 @@
 
   {{#if this.parsed1}}
     <div class="grid grid-cols-2 gap-4 mt-6">
-      <div>
+      <div class="flex flex-col md:flex-row gap-5">
+
+      <div class="mr-6">
         <h4 class="font-semibold">First JSON</h4>
-        <div class="bg-gray-100 p-2 rounded overflow-auto h-96">
+        <div class="bg-gray-100 py-2 rounded overflow-auto h-96">
           <JsonNode
             @key="root"
             @data={{this.parsed1}}
@@ -52,9 +54,9 @@
         </div>
       </div>
 
-      <div>
+      <div class="ml-6">
         <h4 class="font-semibold">Second JSON</h4>
-        <div class="bg-gray-100 p-2 rounded overflow-auto h-96">
+        <div class="bg-gray-100 py-2 rounded overflow-auto h-96">
           <JsonNode
             @key="root"
             @data={{this.parsed2}}
@@ -62,6 +64,7 @@
             @diffs={{this.diffs}}
           />
         </div>
+      </div>
       </div>
     </div>
   {{/if}}
