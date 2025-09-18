@@ -1,0 +1,30 @@
+<div id={{@prefix}} class="p-1 {{this.highlightClass}}">
+  {{#if this.isObject}}
+    <button
+      type="button"
+      class="mr-1 text-xs px-1 bg-gray-300 rounded"
+      {{on "click" this.toggle}}
+    >
+      {{if this.expanded "-" "+"}}
+    </button>
+    <span class="font-bold">{{@key}}:</span>
+
+    {{#if this.expanded}}
+      <div class="ml-4">
+        {{#each this.keys as |k|}}
+          <JsonNode
+            @key={{k}}
+            @data={{get @data k}}
+            @prefix={{concat @prefix "." k}}
+            @diffs={{@diffs}}
+          />
+        {{/each}}
+      </div>
+    {{else}}
+      <span class="text-gray-500"> {...} </span>
+    {{/if}}
+  {{else}}
+    <span class="font-bold">{{@key}}:</span>
+    <span class="text-gray-700 ml-1">{{@data}}</span>
+  {{/if}}
+</div>

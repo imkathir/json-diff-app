@@ -1,0 +1,62 @@
+<div class="p-4">
+  <h2 class="text-xl font-bold mb-4">JSON Diff Checker</h2>
+
+  <textarea
+    class="border p-2 w-full mb-2"
+    rows="8"
+    placeholder="Paste first JSON here"
+    value={{this.json1}}
+    {{on "input" this.updateJson1}}
+  ></textarea>
+
+  <textarea
+    class="border p-2 w-full mb-2"
+    rows="8"
+    placeholder="Paste second JSON here"
+    value={{this.json2}}
+    {{on "input" this.updateJson2}}
+  ></textarea>
+
+  {{#if this.error}}
+    <div class="text-red-600 font-bold mb-2">{{this.error}}</div>
+  {{/if}}
+
+  {{#if this.diffs.length}}
+    <div class="mt-4">
+      <h3 class="text-lg font-semibold">Differences:</h3>
+      <ul class="list-disc pl-6">
+        {{#each this.diffs as |d|}}
+          <li><strong>{{d.path}}</strong> → First: {{d.first}} | Second: {{d.second}}</li>
+        {{/each}}
+      </ul>
+    </div>
+  {{/if}}
+
+  {{#if this.parsed1}}
+    <div class="grid grid-cols-2 gap-4 mt-6">
+      <div>
+        <h4 class="font-semibold">First JSON</h4>
+        <div class="bg-gray-100 p-2 rounded overflow-auto h-96">
+          <JsonNode
+            @key="root"
+            @data={{this.parsed1}}
+            @prefix="root"
+            @diffs={{this.diffs}}
+          />
+        </div>
+      </div>
+
+      <div>
+        <h4 class="font-semibold">Second JSON</h4>
+        <div class="bg-gray-100 p-2 rounded overflow-auto h-96">
+          <JsonNode
+            @key="root"
+            @data={{this.parsed2}}
+            @prefix="root"
+            @diffs={{this.diffs}}
+          />
+        </div>
+      </div>
+    </div>
+  {{/if}}
+</div>

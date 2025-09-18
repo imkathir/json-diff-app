@@ -1,0 +1,13 @@
+@import 'tailwind.css';
+
+/* highlight class for nodes that differ */
+.json-diff-highlight {
+  background: #fff4cc;
+  border-radius: 4px;
+}
+
+/* temporary flash when clicked via diff list */
+.json-diff-flash {
+  outline: 3px solid #ffeb99;
+  transition: outline 0.25s ease-in-out;
+}
