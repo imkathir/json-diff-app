@@ -55,11 +55,28 @@
           </button>
         </div>
       </div>
-      <ul class="list-disc p-6">
-        {{#each this.filteredDiffs as |d|}}
-          <li><strong>{{d.path}}</strong> → <span class="{{if d.isMissing 'bg-red-light' 'bg-orange-light '}} my-1  text-white">  First: {{d.first}}   |   Second: {{d.second}}</span></li>
-        {{/each}}
-      </ul>
+      <table class="w-full border-collapse">
+        <thead>
+          <tr class="bg-gray-100">
+            <th class="border border-gray-300 px-4 py-2 text-left font-semibold">Path</th>
+            <th class="border border-gray-300 px-4 py-2 text-left font-semibold">First JSON</th>
+            <th class="border border-gray-300 px-4 py-2 text-left font-semibold">Second JSON</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{#each this.filteredDiffs as |d|}}
+            <tr>
+              <td class="border border-gray-300 px-4 py-2 font-bold">{{d.path}}</td>
+              <td class="border border-gray-300 px-4 py-2">
+                <span class="{{if d.isMissing 'bg-red-light' 'bg-orange-light'}} text-white px-2 py-1 rounded">{{d.first}}</span>
+              </td>
+              <td class="border border-gray-300 px-4 py-2">
+                <span class="{{if d.isMissing 'bg-red-light' 'bg-orange-light'}} text-white px-2 py-1 rounded">{{d.second}}</span>
+              </td>
+            </tr>
+          {{/each}}
+        </tbody>
+      </table>
     </div>
   {{/if}}
 
